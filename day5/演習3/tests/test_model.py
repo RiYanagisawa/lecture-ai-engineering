@@ -7,10 +7,13 @@ import time
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
@@ -116,9 +119,32 @@ def test_model_accuracy(train_model):
     # 予測と精度計算
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
+    print(accuracy)
 
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
+
+def test_model_accuracy(train_model):
+    """モデルの再現率を検証"""
+    model, X_test, y_test = train_model
+
+    # 予測と再現率計算
+    y_pred = model.predict(X_test)
+    recall = recall_score(y_test, y_pred)
+    print(recall)
+
+    assert recall >= 0.75, f"モデルの再現率が低すぎます: {recall}"
+
+def test_model_accuracy(train_model):
+    """モデルのF1スコアを検証"""
+    model, X_test, y_test = train_model
+
+    # 予測とF1スコア計算
+    y_pred = model.predict(X_test)
+    f1 = f1_score(y_test, y_pred, average='macro')
+    print(f1)
+
+    assert f1 >= 0.75, f"モデルのF1スコアが低すぎます: {f1}"
 
 
 def test_model_inference_time(train_model):
@@ -131,6 +157,7 @@ def test_model_inference_time(train_model):
     end_time = time.time()
 
     inference_time = end_time - start_time
+    print(inference_time)
 
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
