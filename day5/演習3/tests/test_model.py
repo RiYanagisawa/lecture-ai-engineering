@@ -124,6 +124,7 @@ def test_model_accuracy(train_model):
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
+
 def test_model_accuracy(train_model):
     """モデルの再現率を検証"""
     model, X_test, y_test = train_model
@@ -135,13 +136,14 @@ def test_model_accuracy(train_model):
 
     assert recall >= 0.75, f"モデルの再現率が低すぎます: {recall}"
 
+
 def test_model_accuracy(train_model):
     """モデルのF1スコアを検証"""
     model, X_test, y_test = train_model
 
     # 予測とF1スコア計算
     y_pred = model.predict(X_test)
-    f1 = f1_score(y_test, y_pred, average='macro')
+    f1 = f1_score(y_test, y_pred, average="macro")
     print(f1)
 
     assert f1 >= 0.75, f"モデルのF1スコアが低すぎます: {f1}"
